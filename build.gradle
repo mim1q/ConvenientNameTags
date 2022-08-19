@@ -1,0 +1,97 @@
+import com.modrinth.minotaur.dependencies.ModDependency
+
+plugins {
+  id "fabric-loom" version "0.12-SNAPSHOT"
+  id "maven-publish"
+  id "com.modrinth.minotaur" version "2.+"
+  id "com.matthewprenger.cursegradle" version "1.4.0"
+  id "co.uzzu.dotenv.gradle" version "2.0.0"
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+archivesBaseName = project.archives_base_name
+group = project.maven_group
+version = project.mod_version
+def versionType = project.mod_version_type
+def mcVersion = project.minecraft_version
+
+
+if (env.MODRINTH_TOKEN.isPresent()) {
+  println("Modrinth token present")
+  modrinth {
+    token.set(env.MODRINTH_TOKEN.value)
+    projectId.set("")
+    uploadFile.set(remapJar)
+    versionType.set("${project.mod_version_type}")
+    versionName.set("minecells-${mcVersion}-${versionType}-${version}")
+    changelog.set(rootProject.file("changelogs/minecells_${version}.md").text)
+    syncBodyFrom.set(rootProject.file("README.md").text)
+
+    dependencies.set([
+      new ModDependency("P7dR8mSH", "required")
+    ])
+  }
+}
+
+if (env.CURSEGRADLE_TOKEN.isPresent()) {
+  println("Cursegradle token present")
+  curseforge {
+    apiKey = env.CURSEGRADLE_TOKEN.value
+    project {
+      id = ""
+      changelog = rootProject.file("changelogs/minecells_${version}.md").text
+      changelogType = "markdown"
+      releaseType = "${version}"
+      addGameVersion "Fabric"
+      addGameVersion "1.19"
+      relations {
+        requiredLibrary "fabric-api"
+      }
+      afterEvaluate {
+        mainArtifact(remapJar) {
+          displayName = "minecells-${mcVersion}-${versionType}-${version}"
+        }
+        uploadTask.dependsOn(remapJar)
+      }
+    }
+    options {
+      forgeGradleIntegration = false
+    }
+  }
+}
+
+repositories {
+  mavenCentral()
+  maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+  minecraft "com.mojang:minecraft:${mcVersion}"
+  mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+  modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+  modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+processResources {
+  inputs.property "version", project.version
+
+  filesMatching("fabric.mod.json") {
+    expand "version": project.version
+  }
+}
+
+tasks.withType(JavaCompile).configureEach {
+  it.options.release.set(17)
+}
+
+java {
+  withSourcesJar()
+}
+
+jar {
+  from("LICENSE") {
+    rename { "${it}_${archivesBaseName}" }
+  }
+}
