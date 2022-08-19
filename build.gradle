@@ -24,7 +24,7 @@ if (env.MODRINTH_TOKEN.isPresent()) {
     token.set(env.MODRINTH_TOKEN.value)
     projectId.set("")
     uploadFile.set(remapJar)
-    versionType.set("${project.mod_version_type}")
+    versionType.set(versionType)
     versionName.set("minecells-${mcVersion}-${versionType}-${version}")
     changelog.set(rootProject.file("changelogs/minecells_${version}.md").text)
     syncBodyFrom.set(rootProject.file("README.md").text)
@@ -43,7 +43,7 @@ if (env.CURSEGRADLE_TOKEN.isPresent()) {
       id = ""
       changelog = rootProject.file("changelogs/minecells_${version}.md").text
       changelogType = "markdown"
-      releaseType = "${version}"
+      releaseType = versionType
       addGameVersion "Fabric"
       addGameVersion "1.19"
       relations {

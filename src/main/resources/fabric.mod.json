@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "convenientnametags",
+  "version": "${version}",
+  "name": "Convenient Name Tags",
+  "description": "Lets you right click Name Tags in the air to change their name!",
+  "authors": [
+    "Mim1q"
+  ],
+  "contact": {},
+  "license": "Apache 2.0",
+  "icon": "assets/convenientnametags/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.mim1q.convenientnametags.ConvenientNameTags"
+    ]
+  },
+  "mixins": [
+    "convenientnametags.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.8",
+    "fabric": "*",
+    "minecraft": "1.19"
+  }
+}
