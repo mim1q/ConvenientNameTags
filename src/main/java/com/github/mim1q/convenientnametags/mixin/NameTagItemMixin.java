@@ -1,9 +1,6 @@
 package com.github.mim1q.convenientnametags.mixin;
 
-import com.github.mim1q.convenientnametags.network.RenameNameTagPacket;
 import com.github.mim1q.convenientnametags.screen.RenameNameTagScreen;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,9 +18,13 @@ public abstract class NameTagItemMixin extends Item {
   @Override
   public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
     ItemStack itemStack = user.getStackInHand(hand);
-    if (world.isClient()) {
-      RenameNameTagScreen.open(world, user, itemStack);
+    if (hand == Hand.OFF_HAND) {
+      return TypedActionResult.pass(itemStack);
     }
-    return TypedActionResult.success(user.getStackInHand(hand));
+
+    if (world.isClient()) {
+      RenameNameTagScreen.open(user, itemStack);
+    }
+    return TypedActionResult.success(itemStack);
   }
 }
