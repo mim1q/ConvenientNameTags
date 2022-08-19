@@ -36,10 +36,12 @@ public class RenameNameTagScreen extends Screen {
     }
 
     this.clearChildren();
+    this.client.keyboard.setRepeatEvents(true);
 
     int halfWidth = this.width / 2;
     int halfHeight = this.height / 2;
 
+    // New name input field
     this.textField = new TextFieldWidget(
       this.client.textRenderer,
       halfWidth - 100,
@@ -52,6 +54,7 @@ public class RenameNameTagScreen extends Screen {
     this.textField.setChangedListener(this::onTextChanged);
     this.addDrawableChild(this.textField);
 
+    // Submit button
     this.submitButton = new ButtonWidget(
       halfWidth - 101,
       halfHeight + 14,
@@ -62,8 +65,17 @@ public class RenameNameTagScreen extends Screen {
     );
     this.addDrawableChild(submitButton);
 
+    // Set default input text to current name
     this.textField.setText(this.itemStack.getName().getString());
     this.setInitialFocus(this.textField);
+  }
+
+  @Override
+  public void removed() {
+    super.removed();
+    if (this.client != null) {
+      this.client.keyboard.setRepeatEvents(false);
+    }
   }
 
   private void onTextChanged(String string) {
