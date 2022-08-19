@@ -2,7 +2,9 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.github.mim1q.convenientnametags.mixin",
-  "mixins": [],
+  "mixins": [
+    "NameTagItemMixin"
+  ],
   "client": [],
   "server": [],
   "injectors": {
