@@ -14,24 +14,25 @@ targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = project.archives_base_name
 group = project.maven_group
 version = project.mod_version
-def versionType = project.mod_version_type
+def releaseType = project.mod_version_type
 def mcVersion = project.minecraft_version
 
 
 if (env.MODRINTH_TOKEN.isPresent()) {
   println("Modrinth token present")
   modrinth {
-    token.set(env.MODRINTH_TOKEN.value)
-    projectId.set("")
-    uploadFile.set(remapJar)
-    versionType.set(versionType)
-    versionName.set("convenientnametags-${mcVersion}-${versionType}-${version}")
-    changelog.set(rootProject.file("changelogs/convenientnametags_${version}.md").text)
-    syncBodyFrom.set(rootProject.file("README.md").text)
-
-    dependencies.set([
-      new ModDependency("P7dR8mSH", "required")
-    ])
+    token = env.MODRINTH_TOKEN.value
+    projectId = "eUsHC1iS"
+    uploadFile = remapJar
+    versionType = releaseType
+    versionName = "convenientnametags-${mcVersion}-${releaseType}-${version}"
+    changelog = rootProject.file("changelogs/convenientnametags_${version}.md").text
+    syncBodyFrom = rootProject.file("README.md").text
+    gameVersions = ["1.19, 1.19.1, 1.19.2"]
+    loaders = ["fabric"]
+    dependencies {
+      required.project "fabric-api"
+    }
   }
 }
 
@@ -40,12 +41,14 @@ if (env.CURSEGRADLE_TOKEN.isPresent()) {
   curseforge {
     apiKey = env.CURSEGRADLE_TOKEN.value
     project {
-      id = ""
+      id = "662763"
       changelog = rootProject.file("changelogs/convenientnametags_${version}.md").text
       changelogType = "markdown"
       releaseType = versionType
       addGameVersion "Fabric"
       addGameVersion "1.19"
+      addGameVersion "1.19.1"
+      addGameVersion "1.19.2"
       relations {
         requiredLibrary "fabric-api"
       }
