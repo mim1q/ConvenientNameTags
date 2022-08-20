@@ -14,7 +14,7 @@ targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = project.archives_base_name
 group = project.maven_group
 version = project.mod_version
-def releaseType = project.mod_version_type
+def modVersionType = project.mod_version_type
 def mcVersion = project.minecraft_version
 
 
@@ -24,8 +24,8 @@ if (env.MODRINTH_TOKEN.isPresent()) {
     token = env.MODRINTH_TOKEN.value
     projectId = "eUsHC1iS"
     uploadFile = remapJar
-    versionType = releaseType
-    versionName = "convenientnametags-${mcVersion}-${releaseType}-${version}"
+    versionType = modVersionType
+    versionName = "convenientnametags-${mcVersion}-${modVersionType}-${version}"
     changelog = rootProject.file("changelogs/convenientnametags_${version}.md").text
     syncBodyFrom = rootProject.file("README.md").text
     gameVersions = ["1.19, 1.19.1, 1.19.2"]
@@ -44,7 +44,7 @@ if (env.CURSEGRADLE_TOKEN.isPresent()) {
       id = "662763"
       changelog = rootProject.file("changelogs/convenientnametags_${version}.md").text
       changelogType = "markdown"
-      releaseType = versionType
+      releaseType = modVersionType
       addGameVersion "Fabric"
       addGameVersion "1.19"
       addGameVersion "1.19.1"
@@ -54,7 +54,7 @@ if (env.CURSEGRADLE_TOKEN.isPresent()) {
       }
       afterEvaluate {
         mainArtifact(remapJar) {
-          displayName = "convenientnametags-${mcVersion}-${versionType}-${version}"
+          displayName = "convenientnametags-${mcVersion}-${modVersionType}-${version}"
         }
         uploadTask.dependsOn(remapJar)
       }
