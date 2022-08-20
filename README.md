@@ -9,15 +9,17 @@
 
 </center>
 
-If you ever wanted Name Tags to be just a little easier to use, this mod is for you. Simply right click any Name Tag when not looking directly at a mob and you'll be able to rename it using a custom GUI.
+If you ever wanted Name Tags to be just a little easier to use, this mod is for you. Simply right-click any Name Tag when not looking directly at a mob and you'll be able to rename it using a custom GUI.
 
 ![Screenshot](https://github.com/mim1q/ConvenientNameTags/blob/master/project/screenshot.png?raw=true)
 
 ## Planned features
 
 - Configurable XP cost
+- Remove name from Name Tags by right-clicking on a cauldron
 - Optional: disable renaming Name Tags in anvils
 - Optional: require anvil in inventory
+- If requested, I'll consider porting this mod to 1.18.x and/or Forge
 
 ## Links
 
