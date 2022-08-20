@@ -60,7 +60,7 @@ public class RenameNameTagScreen extends Screen {
       halfHeight + 14,
       20,
       20,
-      Text.of("v"),
+      Text.of("✔"),
       this::onSubmit
     );
     this.addDrawableChild(submitButton);
