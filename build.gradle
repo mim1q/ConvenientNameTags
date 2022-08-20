@@ -25,8 +25,8 @@ if (env.MODRINTH_TOKEN.isPresent()) {
     projectId.set("")
     uploadFile.set(remapJar)
     versionType.set(versionType)
-    versionName.set("minecells-${mcVersion}-${versionType}-${version}")
-    changelog.set(rootProject.file("changelogs/minecells_${version}.md").text)
+    versionName.set("convenientnametags-${mcVersion}-${versionType}-${version}")
+    changelog.set(rootProject.file("changelogs/convenientnametags_${version}.md").text)
     syncBodyFrom.set(rootProject.file("README.md").text)
 
     dependencies.set([
@@ -41,7 +41,7 @@ if (env.CURSEGRADLE_TOKEN.isPresent()) {
     apiKey = env.CURSEGRADLE_TOKEN.value
     project {
       id = ""
-      changelog = rootProject.file("changelogs/minecells_${version}.md").text
+      changelog = rootProject.file("changelogs/convenientnametags_${version}.md").text
       changelogType = "markdown"
       releaseType = versionType
       addGameVersion "Fabric"
@@ -51,7 +51,7 @@ if (env.CURSEGRADLE_TOKEN.isPresent()) {
       }
       afterEvaluate {
         mainArtifact(remapJar) {
-          displayName = "minecells-${mcVersion}-${versionType}-${version}"
+          displayName = "convenientnametags-${mcVersion}-${versionType}-${version}"
         }
         uploadTask.dependsOn(remapJar)
       }
