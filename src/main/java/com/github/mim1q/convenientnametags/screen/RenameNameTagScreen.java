@@ -22,7 +22,9 @@ public class RenameNameTagScreen extends Screen {
   private static final String CANCEL_KEY = "gui.convenientnametags.cancel";
   private static final String APPLY_KEY = "gui.convenientnametags.apply";
   private static final String CLEAR_KEY = "gui.convenientnametags.clear";
-  private static final Text CHECKMARK = Text.of("✔");
+  private static final String APPLY_TOOLTIP_KEY = "gui.convenientnametags.apply_tooltip";
+  private static final String CLEAR_TOOLTIP_KEY = "gui.convenientnametags.clear_tooltip";
+  private static final String CANCEL_TOOLTIP_KEY = "gui.convenientnametags.cancel_tooltip";
 
   private TextFieldWidget textField;
   private ButtonWidget submitButton;
@@ -67,7 +69,7 @@ public class RenameNameTagScreen extends Screen {
       halfHeight + 14,
       20,
       20,
-      CHECKMARK,
+      Text.translatable(APPLY_KEY),
       this::onSubmit
     );
     this.addDrawableChild(submitButton);
