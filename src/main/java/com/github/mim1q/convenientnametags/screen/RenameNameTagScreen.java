@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 public class RenameNameTagScreen extends Screen {
 
   private static final String TITLE_KEY = "gui.convenientnametags.title";
-  private static final String EXPREIENCE_REQUIRED_KEY = "gui.convenientnametags.experience_required";
+  private static final String EXPERIENCE_REQUIRED_KEY = "gui.convenientnametags.experience_required";
   private static final String APPLY_KEY = "gui.convenientnametags.apply";
   private static final String CLEAR_KEY = "gui.convenientnametags.clear";
   private static final String CANCEL_KEY = "gui.convenientnametags.cancel";
@@ -30,6 +30,8 @@ public class RenameNameTagScreen extends Screen {
 
   private TextFieldWidget textField;
   private ButtonWidget applyButton;
+  private ButtonWidget clearButton;
+  private ButtonWidget cancelButton;
 
   private final ClientPlayerEntity player;
   private final ItemStack itemStack;
@@ -65,17 +67,38 @@ public class RenameNameTagScreen extends Screen {
     this.textField.setChangedListener(this::onTextChanged);
     this.addDrawableChild(this.textField);
 
-    // Submit button
     this.applyButton = new ButtonWidget(
       halfWidth - 101,
       halfHeight + 14,
       20,
       20,
       Text.translatable(APPLY_KEY),
-      this::onSubmit,
+      this::onButtonClicked,
       new ButtonTooltipSupplier(APPLY_TOOLTIP_KEY, this)
     );
     this.addDrawableChild(applyButton);
+
+    this.clearButton = new ButtonWidget(
+      halfWidth - 79,
+      halfHeight + 14,
+      20,
+      20,
+      Text.translatable(CLEAR_KEY),
+      this::onButtonClicked,
+      new ButtonTooltipSupplier(CLEAR_TOOLTIP_KEY, this)
+    );
+    this.addDrawableChild(clearButton);
+
+    this.cancelButton = new ButtonWidget(
+      halfWidth - 57,
+      halfHeight + 14,
+      20,
+      20,
+      Text.translatable(CANCEL_KEY),
+      this::onButtonClicked,
+      new ButtonTooltipSupplier(CANCEL_TOOLTIP_KEY, this)
+    );
+    this.addDrawableChild(cancelButton);
 
     // Set default input text to current name
     this.textField.setText(this.itemStack.getName().getString());
@@ -94,9 +117,17 @@ public class RenameNameTagScreen extends Screen {
     this.applyButton.active = string.length() > 0;
   }
 
-  private void onSubmit(ButtonWidget button) {
-    ClientPlayNetworking.send(RenameNameTagPacket.ID, new RenameNameTagPacket(this.textField.getText()));
+  private void onButtonClicked(ButtonWidget button) {
+    if (button == this.applyButton) {
+      this.sendRenamePacket(this.textField.getText());
+    } else if (button == this.clearButton) {
+      this.sendRenamePacket("");
+    }
     this.close();
+  }
+
+  private void sendRenamePacket(String customName) {
+    ClientPlayNetworking.send(RenameNameTagPacket.ID, new RenameNameTagPacket(customName));
   }
 
   @Override
