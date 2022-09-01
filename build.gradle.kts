@@ -1,5 +1,6 @@
 import com.matthewprenger.cursegradle.*
 import net.fabricmc.loom.task.RemapJarTask
+import java.io.FileNotFoundException
 
 plugins {
   id("fabric-loom") version Versions.loom
@@ -53,6 +54,11 @@ val secretsFile = rootProject.file("publishing.properties")
 val secrets = Secrets(secretsFile)
 val versionName = "${ModData.id}-${Versions.minecraft[0]}-${ModData.version}"
 val remapJar = tasks.getByName("remapJar") as RemapJarTask
+val changelog = try {
+  rootProject.file("${ModData.id}_${ModData.version}").readText()
+} catch (_: FileNotFoundException) {
+  ""
+}
 
 if (secrets.isModrinthReady()) {
   println("Setting up Minotaur")
@@ -62,7 +68,7 @@ if (secrets.isModrinthReady()) {
     uploadFile.set(remapJar)
     versionName.set(versionName)
     versionType.set(ModData.versionType)
-    changelog.set(ModData.changelog)
+    changelog.set(changelog)
     syncBodyFrom.set(rootProject.file("README.md").readText())
     gameVersions.set(ModData.mcVersions)
     loaders.set(listOf("fabric"))
