@@ -31,7 +31,6 @@ dependencies {
   mappings("net.fabricmc:yarn:${Versions.yarn}:v2")
   modImplementation("net.fabricmc:fabric-loader:${Versions.fabricLoader}")
   modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.fabricApi}")
-  modImplementation("net.fabricmc:fabric-language-kotlin:${Versions.fabricKotlin}")
 }
 
 @Suppress("UnstableApiUsage")
@@ -86,7 +85,7 @@ if (secrets.isCurseforgeReady()) {
       id = secrets.curseforgeId
       releaseType = ModData.versionType
       ModData.mcVersions.forEach(::addGameVersion)
-      changelog = ModData.changelog
+      changelog = changelog
       changelogType = "markdown"
       relations(closureOf<CurseRelation> {
         ModData.dependencies.forEach(::requiredDependency)
