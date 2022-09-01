@@ -14,20 +14,22 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
+import java.util.function.Consumer;
+
 @Environment(EnvType.CLIENT)
 public class RenameNameTagScreen extends Screen {
 
   private static final String TITLE_KEY = "gui.convenientnametags.title";
   private static final String EXPREIENCE_REQUIRED_KEY = "gui.convenientnametags.experience_required";
-  private static final String CANCEL_KEY = "gui.convenientnametags.cancel";
   private static final String APPLY_KEY = "gui.convenientnametags.apply";
   private static final String CLEAR_KEY = "gui.convenientnametags.clear";
-  private static final String APPLY_TOOLTIP_KEY = "gui.convenientnametags.apply_tooltip";
-  private static final String CLEAR_TOOLTIP_KEY = "gui.convenientnametags.clear_tooltip";
-  private static final String CANCEL_TOOLTIP_KEY = "gui.convenientnametags.cancel_tooltip";
+  private static final String CANCEL_KEY = "gui.convenientnametags.cancel";
+  private static final String APPLY_TOOLTIP_KEY = "gui.convenientnametags.apply.tooltip";
+  private static final String CLEAR_TOOLTIP_KEY = "gui.convenientnametags.clear.tooltip";
+  private static final String CANCEL_TOOLTIP_KEY = "gui.convenientnametags.cancel.tooltip";
 
   private TextFieldWidget textField;
-  private ButtonWidget submitButton;
+  private ButtonWidget applyButton;
 
   private final ClientPlayerEntity player;
   private final ItemStack itemStack;
@@ -64,15 +66,16 @@ public class RenameNameTagScreen extends Screen {
     this.addDrawableChild(this.textField);
 
     // Submit button
-    this.submitButton = new ButtonWidget(
+    this.applyButton = new ButtonWidget(
       halfWidth - 101,
       halfHeight + 14,
       20,
       20,
       Text.translatable(APPLY_KEY),
-      this::onSubmit
+      this::onSubmit,
+      new ButtonTooltipSupplier(APPLY_TOOLTIP_KEY, this)
     );
-    this.addDrawableChild(submitButton);
+    this.addDrawableChild(applyButton);
 
     // Set default input text to current name
     this.textField.setText(this.itemStack.getName().getString());
@@ -88,7 +91,7 @@ public class RenameNameTagScreen extends Screen {
   }
 
   private void onTextChanged(String string) {
-    this.submitButton.active = string.length() > 0;
+    this.applyButton.active = string.length() > 0;
   }
 
   private void onSubmit(ButtonWidget button) {
@@ -119,5 +122,26 @@ public class RenameNameTagScreen extends Screen {
 
   public static void open(PlayerEntity player, ItemStack stack) {
     MinecraftClient.getInstance().setScreen(new RenameNameTagScreen((ClientPlayerEntity) player, stack));
+  }
+
+  private static class ButtonTooltipSupplier implements ButtonWidget.TooltipSupplier {
+
+    private final Text text;
+    private final Screen screen;
+
+    public ButtonTooltipSupplier(String key, Screen screen) {
+      this.text = Text.translatable(key);
+      this.screen = screen;
+    }
+
+    @Override
+    public void onTooltip(ButtonWidget button, MatrixStack matrices, int mouseX, int mouseY) {
+      screen.renderTooltip(matrices, this.text, mouseX, mouseY + 12);
+    }
+
+    @Override
+    public void supply(Consumer<Text> consumer) {
+      consumer.accept(this.text);
+    }
   }
 }
