@@ -17,6 +17,9 @@ import net.minecraft.text.Text;
 @Environment(EnvType.CLIENT)
 public class RenameNameTagScreen extends Screen {
 
+  private static final String TITLE_KEY = "convenientnametags.gui.title";
+  private static final Text CHECKMARK = Text.of("✔");
+
   private TextFieldWidget textField;
   private ButtonWidget submitButton;
 
@@ -24,7 +27,7 @@ public class RenameNameTagScreen extends Screen {
   private final ItemStack itemStack;
 
   public RenameNameTagScreen(ClientPlayerEntity player, ItemStack stack) {
-    super(Text.of("Rename Name Tag"));
+    super(Text.translatable(TITLE_KEY));
     this.player = player;
     this.itemStack = stack;
   }
@@ -60,7 +63,7 @@ public class RenameNameTagScreen extends Screen {
       halfHeight + 14,
       20,
       20,
-      Text.of("✔"),
+      CHECKMARK,
       this::onSubmit
     );
     this.addDrawableChild(submitButton);
@@ -95,7 +98,7 @@ public class RenameNameTagScreen extends Screen {
     this.renderBackground(matrices);
     this.textRenderer.drawWithShadow(
       matrices,
-      "Rename Name Tag",
+      this.getTitle(),
       halfWidth - 100.0F,
       halfHeight - 22.0F,
       0xFFFFFF
