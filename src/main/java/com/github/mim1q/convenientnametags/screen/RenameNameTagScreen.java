@@ -17,7 +17,11 @@ import net.minecraft.text.Text;
 @Environment(EnvType.CLIENT)
 public class RenameNameTagScreen extends Screen {
 
-  private static final String TITLE_KEY = "convenientnametags.gui.title";
+  private static final String TITLE_KEY = "gui.convenientnametags.title";
+  private static final String EXPREIENCE_REQUIRED_KEY = "gui.convenientnametags.experience_required";
+  private static final String CANCEL_KEY = "gui.convenientnametags.cancel";
+  private static final String APPLY_KEY = "gui.convenientnametags.apply";
+  private static final String CLEAR_KEY = "gui.convenientnametags.clear";
   private static final Text CHECKMARK = Text.of("✔");
 
   private TextFieldWidget textField;
