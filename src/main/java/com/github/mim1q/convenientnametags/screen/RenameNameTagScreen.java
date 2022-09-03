@@ -76,6 +76,7 @@ public class RenameNameTagScreen extends Screen {
       this::onButtonClicked,
       new ButtonTooltipSupplier(APPLY_TOOLTIP_KEY, this)
     );
+    this.applyButton.active = canApply();
     this.addDrawableChild(applyButton);
 
     this.clearButton = new ButtonWidget(
@@ -87,6 +88,7 @@ public class RenameNameTagScreen extends Screen {
       this::onButtonClicked,
       new ButtonTooltipSupplier(CLEAR_TOOLTIP_KEY, this)
     );
+    this.clearButton.active = false;
     this.addDrawableChild(clearButton);
 
     this.cancelButton = new ButtonWidget(
@@ -101,7 +103,10 @@ public class RenameNameTagScreen extends Screen {
     this.addDrawableChild(cancelButton);
 
     // Set default input text to current name
-    this.textField.setText(this.itemStack.getName().getString());
+    if (this.itemStack.hasCustomName()) {
+      this.textField.setText(this.itemStack.getName().getString());
+      this.clearButton.active = true;
+    }
     this.setInitialFocus(this.textField);
   }
 
@@ -114,7 +119,13 @@ public class RenameNameTagScreen extends Screen {
   }
 
   private void onTextChanged(String string) {
-    this.applyButton.active = string.length() > 0;
+    this.applyButton.active = canApply();
+  }
+
+  private boolean canApply() {
+    String currentName = this.itemStack.hasCustomName() ? this.itemStack.getName().getString() : "";
+    String newName = this.textField.getText();
+    return !(currentName.equals(newName) || newName.isBlank());
   }
 
   private void onButtonClicked(ButtonWidget button) {
