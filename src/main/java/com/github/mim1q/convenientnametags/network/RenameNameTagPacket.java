@@ -26,7 +26,11 @@ public class RenameNameTagPacket extends PacketByteBuf {
     server.execute(() -> {
       final ItemStack itemStack = player.getMainHandStack();
       if (itemStack != null) {
-        itemStack.setCustomName(Text.of(customName));
+        if (customName.isEmpty()) {
+          itemStack.removeCustomName();
+        } else {
+          itemStack.setCustomName(Text.of(customName));
+        }
       }
     });
   }
