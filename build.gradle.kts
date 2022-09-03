@@ -51,9 +51,10 @@ dependencies {
 // Publishing
 val secretsFile = rootProject.file("publishing.properties")
 val secrets = Secrets(secretsFile)
-val versionName = "${ModData.id}-${Versions.minecraft[0]}-${ModData.version}"
+
 val remapJar = tasks.getByName("remapJar") as RemapJarTask
-val changelog = try {
+val newVersionName = "${ModData.id}-${Versions.minecraft[0]}-${ModData.version}"
+val newChangelog = try {
   rootProject.file("${ModData.id}_${ModData.version}").readText()
 } catch (_: FileNotFoundException) {
   ""
@@ -65,9 +66,9 @@ if (secrets.isModrinthReady()) {
     token.set(secrets.modrinthToken)
     projectId.set(secrets.modrinthId)
     uploadFile.set(remapJar)
-    versionName.set(versionName)
+    versionName.set(newVersionName)
     versionType.set(ModData.versionType)
-    changelog.set(changelog)
+    changelog.set(newChangelog)
     syncBodyFrom.set(rootProject.file("README.md").readText())
     gameVersions.set(ModData.mcVersions)
     loaders.set(listOf("fabric"))
@@ -85,13 +86,13 @@ if (secrets.isCurseforgeReady()) {
       id = secrets.curseforgeId
       releaseType = ModData.versionType
       ModData.mcVersions.forEach(::addGameVersion)
-      changelog = changelog
+      changelog = newChangelog
       changelogType = "markdown"
       relations(closureOf<CurseRelation> {
         ModData.dependencies.forEach(::requiredDependency)
       })
       mainArtifact(remapJar, closureOf<CurseArtifact> {
-        displayName = versionName
+        displayName = newVersionName
       })
     })
     options(closureOf<Options> {
