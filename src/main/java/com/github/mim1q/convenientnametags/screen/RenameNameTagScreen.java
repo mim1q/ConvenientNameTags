@@ -14,17 +14,30 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
+import java.util.function.Consumer;
+
 @Environment(EnvType.CLIENT)
 public class RenameNameTagScreen extends Screen {
 
+  private static final String TITLE_KEY = "gui.convenientnametags.title";
+  private static final String EXPERIENCE_REQUIRED_KEY = "gui.convenientnametags.experience_required";
+  private static final String APPLY_KEY = "gui.convenientnametags.apply";
+  private static final String CLEAR_KEY = "gui.convenientnametags.clear";
+  private static final String CANCEL_KEY = "gui.convenientnametags.cancel";
+  private static final String APPLY_TOOLTIP_KEY = "gui.convenientnametags.apply.tooltip";
+  private static final String CLEAR_TOOLTIP_KEY = "gui.convenientnametags.clear.tooltip";
+  private static final String CANCEL_TOOLTIP_KEY = "gui.convenientnametags.cancel.tooltip";
+
   private TextFieldWidget textField;
-  private ButtonWidget submitButton;
+  private ButtonWidget applyButton;
+  private ButtonWidget clearButton;
+  private ButtonWidget cancelButton;
 
   private final ClientPlayerEntity player;
   private final ItemStack itemStack;
 
   public RenameNameTagScreen(ClientPlayerEntity player, ItemStack stack) {
-    super(Text.of("Rename Name Tag"));
+    super(Text.translatable(TITLE_KEY));
     this.player = player;
     this.itemStack = stack;
   }
@@ -54,16 +67,38 @@ public class RenameNameTagScreen extends Screen {
     this.textField.setChangedListener(this::onTextChanged);
     this.addDrawableChild(this.textField);
 
-    // Submit button
-    this.submitButton = new ButtonWidget(
+    this.applyButton = new ButtonWidget(
       halfWidth - 101,
       halfHeight + 14,
       20,
       20,
-      Text.of("✔"),
-      this::onSubmit
+      Text.translatable(APPLY_KEY),
+      this::onButtonClicked,
+      new ButtonTooltipSupplier(APPLY_TOOLTIP_KEY, this)
     );
-    this.addDrawableChild(submitButton);
+    this.addDrawableChild(applyButton);
+
+    this.clearButton = new ButtonWidget(
+      halfWidth - 79,
+      halfHeight + 14,
+      20,
+      20,
+      Text.translatable(CLEAR_KEY),
+      this::onButtonClicked,
+      new ButtonTooltipSupplier(CLEAR_TOOLTIP_KEY, this)
+    );
+    this.addDrawableChild(clearButton);
+
+    this.cancelButton = new ButtonWidget(
+      halfWidth - 57,
+      halfHeight + 14,
+      20,
+      20,
+      Text.translatable(CANCEL_KEY),
+      this::onButtonClicked,
+      new ButtonTooltipSupplier(CANCEL_TOOLTIP_KEY, this)
+    );
+    this.addDrawableChild(cancelButton);
 
     // Set default input text to current name
     this.textField.setText(this.itemStack.getName().getString());
@@ -79,12 +114,20 @@ public class RenameNameTagScreen extends Screen {
   }
 
   private void onTextChanged(String string) {
-    this.submitButton.active = string.length() > 0;
+    this.applyButton.active = string.length() > 0;
   }
 
-  private void onSubmit(ButtonWidget button) {
-    ClientPlayNetworking.send(RenameNameTagPacket.ID, new RenameNameTagPacket(this.textField.getText()));
+  private void onButtonClicked(ButtonWidget button) {
+    if (button == this.applyButton) {
+      this.sendRenamePacket(this.textField.getText());
+    } else if (button == this.clearButton) {
+      this.sendRenamePacket("");
+    }
     this.close();
+  }
+
+  private void sendRenamePacket(String customName) {
+    ClientPlayNetworking.send(RenameNameTagPacket.ID, new RenameNameTagPacket(customName));
   }
 
   @Override
@@ -95,7 +138,7 @@ public class RenameNameTagScreen extends Screen {
     this.renderBackground(matrices);
     this.textRenderer.drawWithShadow(
       matrices,
-      "Rename Name Tag",
+      this.getTitle(),
       halfWidth - 100.0F,
       halfHeight - 22.0F,
       0xFFFFFF
@@ -110,5 +153,26 @@ public class RenameNameTagScreen extends Screen {
 
   public static void open(PlayerEntity player, ItemStack stack) {
     MinecraftClient.getInstance().setScreen(new RenameNameTagScreen((ClientPlayerEntity) player, stack));
+  }
+
+  private static class ButtonTooltipSupplier implements ButtonWidget.TooltipSupplier {
+
+    private final Text text;
+    private final Screen screen;
+
+    public ButtonTooltipSupplier(String key, Screen screen) {
+      this.text = Text.translatable(key);
+      this.screen = screen;
+    }
+
+    @Override
+    public void onTooltip(ButtonWidget button, MatrixStack matrices, int mouseX, int mouseY) {
+      screen.renderTooltip(matrices, this.text, mouseX, mouseY + 12);
+    }
+
+    @Override
+    public void supply(Consumer<Text> consumer) {
+      consumer.accept(this.text);
+    }
   }
 }
