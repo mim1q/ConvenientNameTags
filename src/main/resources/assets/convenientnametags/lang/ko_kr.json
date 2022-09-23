@@ -1,0 +1,10 @@
+{
+  "gui.convenientnametags.title": "이름표 이름 바꾸기",
+  "gui.convenientnametags.experience_required": "필요한 경험치 레벨: %d",
+  "gui.convenientnametags.apply": "✔",
+  "gui.convenientnametags.clear": "_",
+  "gui.convenientnametags.cancel": "x",
+  "gui.convenientnametags.apply.tooltip": "적용",
+  "gui.convenientnametags.clear.tooltip": "지우기",
+  "gui.convenientnametags.cancel.tooltip": "취소"
+}
