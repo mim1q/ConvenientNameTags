@@ -1,4 +1,4 @@
-![Convenient Name Tags](https://github.com/mim1q/ConvenientNameTags/blob/master/project/logo.png?raw=true)
+![Convenient Name Tags](https://github.com/mim1q/ConvenientNameTags/blob/master/project/logo.jpg?raw=true)
 
 <center>
 
@@ -11,7 +11,7 @@
 
 If you ever wanted Name Tags to be just a little easier to use, this mod is for you. Simply right-click any Name Tag when not looking directly at a mob and you'll be able to rename it using a custom GUI.
 
-![Screenshot](https://github.com/mim1q/ConvenientNameTags/blob/master/project/screenshot.png?raw=true)
+![Screenshot](https://github.com/mim1q/ConvenientNameTags/blob/master/project/screenshot.jpg?raw=true)
 
 ## Planned features
 
