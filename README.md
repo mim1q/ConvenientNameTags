@@ -18,8 +18,9 @@ If you ever wanted Name Tags to be just a little easier to use, this mod is for 
 - Configurable XP cost
 - Remove name from Name Tags by right-clicking on a cauldron
 - Optional: disable renaming Name Tags in anvils
-- Optional: require anvil in inventory
-- If requested, I'll consider porting this mod to 1.18.x and/or Forge
+
+## Credits
+- [gyular](https://github.com/gyular) - Korean translation
 
 ## Links
 
