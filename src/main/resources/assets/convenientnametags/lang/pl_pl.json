@@ -1,0 +1,10 @@
+{
+  "gui.convenientnametags.title": "Zmień nazwę znacznika",
+  "gui.convenientnametags.experience_required": "Wymagany poziom: %d",
+  "gui.convenientnametags.apply": "✔",
+  "gui.convenientnametags.clear": "_",
+  "gui.convenientnametags.cancel": "x",
+  "gui.convenientnametags.apply.tooltip": "Zatwierdź",
+  "gui.convenientnametags.clear.tooltip": "Wyczyść",
+  "gui.convenientnametags.cancel.tooltip": "Anuluj"
+}
