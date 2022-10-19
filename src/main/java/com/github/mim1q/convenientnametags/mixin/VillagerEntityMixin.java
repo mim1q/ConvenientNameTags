@@ -19,7 +19,7 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
     super(entityType, world);
   }
 
-  @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
+  @Inject(method = "interactMob(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", at = @At("HEAD"), cancellable = true)
   protected void interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
     if (player.getMainHandStack().isOf(Items.NAME_TAG)) {
       cir.setReturnValue(ActionResult.PASS);
