@@ -21,16 +21,16 @@ public abstract class LivingEntityMixin extends Entity implements RemovableNameT
 
   @Inject(method = "dropInventory()V", at = @At("HEAD"))
   protected void dropInventory(CallbackInfo info) {
-    if (this.hasCustomName()) {
-      this.removeNameAndNameTag();
-    }
+    this.removeNameAndNameTag();
   }
 
   public void removeNameAndNameTag() {
-    ItemStack nameTagItemStack = new ItemStack(Items.NAME_TAG);
-    nameTagItemStack.setCustomName(this.getCustomName());
-    ItemEntity item = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), nameTagItemStack);
-    this.world.spawnEntity(item);
-    this.setCustomName(null);
+    if (this.hasCustomName()) {
+      ItemStack nameTagItemStack = new ItemStack(Items.NAME_TAG);
+      nameTagItemStack.setCustomName(this.getCustomName());
+      ItemEntity item = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), nameTagItemStack);
+      this.world.spawnEntity(item);
+      this.setCustomName(null);
+    }
   }
 }
