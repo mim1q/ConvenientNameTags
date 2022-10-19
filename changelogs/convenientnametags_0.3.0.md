@@ -1,12 +1,14 @@
-# 0.3.1
+# 0.3.0
 
 ## New features
 
-- Made renaming Villagers possible
+- Made renaming Villagers and Wandering Trader possible
 - Added a crafting recipe for Name Tags
-- Name Tags now drop from previously named mobs
+- If you have renamed a mob with a Name Tag, it will drop the Name Tag when killed,
+  as well as when applying another Name Tag
 
 ## Improvements
 
 - Pressing Enter in the Name Tag Screen now applies the name change
 - Pressing Shift + Enter clears the name
+
