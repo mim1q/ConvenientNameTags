@@ -2,29 +2,32 @@
 
 <center>
 
-[![Requires Fabric API](https://github.com/mim1q/MineCells/blob/main/project/fabricapi.png?raw=true)
-](https://modrinth.com/mod/fabric-api)
-[![Support me on Ko-fi](https://github.com/mim1q/MineCells/blob/main/project/kofi.png?raw=true)
-](https://ko-fi.com/mim1q)
+[![Requires Fabric API](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/badges/fabric-api.png)](https://modrinth.com/mod/fabric-api)
+[![Support me on Ko-Fi](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/badges/ko-fi.png)](https://ko-fi.com/mim1q)
 
 </center>
 
-If you ever wanted Name Tags to be just a little easier to use, this mod is for you. Simply right-click any Name Tag when not looking directly at a mob and you'll be able to rename it using a custom GUI.
+![Chain separator](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/separators/chain.png)
 
-![Screenshot](https://github.com/mim1q/ConvenientNameTags/blob/master/project/screenshot.jpg?raw=true)
+### Have you ever wanted *Name Tags* to be just a little more *Convenient*?
 
-## Planned features
+That's exactly what this mod does! It lets you rename Name Tags through a custom screen,
+available after right-clicking with the Name Tag in your main hand.
 
-- Configurable XP cost
-- Remove name from Name Tags by right-clicking on a cauldron
-- Optional: disable renaming Name Tags in anvils
+You're no longer required to use an anvil to rename your Name Tags!
 
-## Credits
-- [gyular](https://github.com/gyular) - Korean translation
+![Screenshot](https://raw.githubusercontent.com/mim1q/ConvenientNameTags/master/project/screenshot.jpg)
 
-## Links
+![Chain separator](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/separators/chain.png)
 
-- [Download on Modrinth](https://modrinth.com/mod/convenient-name-tags)
-- [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/convenient-name-tags)
-- [View Source on GitHub](https://github.com/mim1q/ConvenientNameTags)
-- [Support me on Ko-Fi](https://ko-fi.com/mim1q)
+### Special thanks to:
+
+- [gyular](https://github.com/gyular) for Korean translation
+
+![Chain separator](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/separators/chain.png)
+
+### Links
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/convenient-name-tags) | 
+[Modrinth](https://modrinth.com/mod/convenient-name-tags) |
+[GitHub](https://github.com/mim1q/ConvenientNameTags) |
+[Ko-Fi](https://ko-fi.com/mim1q)
