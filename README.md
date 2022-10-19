@@ -1,4 +1,4 @@
-![Convenient Name Tags](https://github.com/mim1q/ConvenientNameTags/blob/master/project/logo.jpg?raw=true)
+![Convenient Name Tags](https://raw.githubusercontent.com/mim1q/ConvenientNameTags/master/projectPageAssets/logo.jpg)
 
 <center>
 
@@ -16,7 +16,7 @@ available after right-clicking with the Name Tag in your main hand.
 
 You're no longer required to use an anvil to rename your Name Tags!
 
-![Screenshot](https://raw.githubusercontent.com/mim1q/ConvenientNameTags/master/project/screenshot.jpg)
+![Screenshot](https://raw.githubusercontent.com/mim1q/ConvenientNameTags/master/projectPageAssets/screenshot.jpg)
 
 ![Chain separator](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/separators/chain.png)
 
