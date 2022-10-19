@@ -118,6 +118,25 @@ public class RenameNameTagScreen extends Screen {
     }
   }
 
+  // Enter: Apply
+  // Shift + Enter: Clear
+  @Override
+  public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    // 257 - Enter Key
+    if (keyCode == 257) {
+      // 1 - Shift Modifier
+      if (modifiers == 1 && this.clearButton.active) {
+        this.onButtonClicked(this.clearButton);
+        return true;
+      }
+      if (this.applyButton.active) {
+        this.onButtonClicked(this.applyButton);
+        return true;
+      }
+    }
+    return super.keyPressed(keyCode, scanCode, modifiers);
+  }
+
   private void onTextChanged(String string) {
     this.applyButton.active = canApply();
   }
