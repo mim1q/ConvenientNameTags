@@ -11,5 +11,5 @@
 ## Improvements
 
 - Pressing Enter in the Name Tag Screen now applies the name change
-- Pressing Shift + Enter clears the name
+- Pressing Shift + Enter in the screen clears the name
 
