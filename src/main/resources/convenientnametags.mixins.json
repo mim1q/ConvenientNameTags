@@ -5,8 +5,7 @@
   "mixins": [
     "LivingEntityMixin",
     "ShearsItemMixin",
-    "VillagerEntityMixin",
-    "WanderingTraderEntityMixin"
+    "CancelInteractMobMixin"
   ],
   "client": [
     "NameTagItemMixin"
