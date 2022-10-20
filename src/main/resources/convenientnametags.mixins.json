@@ -4,6 +4,7 @@
   "package": "com.github.mim1q.convenientnametags.mixin",
   "mixins": [
     "LivingEntityMixin",
+    "ShearsItemMixin",
     "VillagerEntityMixin",
     "WanderingTraderEntityMixin"
   ],
