@@ -77,7 +77,7 @@ public class RenameNameTagScreen extends Screen {
       20,
       Text.translatable(APPLY_KEY),
       this::onButtonClicked,
-      new ApplyButtonTooltipSupplier(APPLY_TOOLTIP_KEY, NOT_ENOUGH_EXPERIENCE_KEY, this, player)
+      new ApplyButtonTooltipSupplier(APPLY_TOOLTIP_KEY, NOT_ENOUGH_EXPERIENCE_KEY, this)
     );
     this.applyButton.active = canApply();
     this.addDrawableChild(applyButton);
@@ -147,7 +147,9 @@ public class RenameNameTagScreen extends Screen {
   private boolean canApply() {
     String currentName = this.itemStack.hasCustomName() ? this.itemStack.getName().getString() : "";
     String newName = this.textField.getText();
-    return !(currentName.equals(newName) || newName.isBlank() || player.experienceLevel < ConvenientNameTags.CONFIG.renameCost);
+    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : this.itemStack.getCount();
+    var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
+    return !(currentName.equals(newName) || newName.isBlank() || player.experienceLevel < cost);
   }
 
   private void onButtonClicked(ButtonWidget button) {
@@ -176,7 +178,8 @@ public class RenameNameTagScreen extends Screen {
       halfHeight - 22.0F,
       0xFFFFFF
     );
-    var cost = ConvenientNameTags.CONFIG.renameCost;
+    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : this.itemStack.getCount();
+    var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
     if (cost > 0) {
       var canAfford = player.experienceLevel >= cost;
       var text = Text.translatable(EXPERIENCE_REQUIRED_KEY, cost).formatted(canAfford ? Formatting.GREEN : Formatting.RED);
@@ -232,36 +235,35 @@ public class RenameNameTagScreen extends Screen {
   }
 
   private static class ApplyButtonTooltipSupplier implements ButtonWidget.TooltipSupplier {
-
-    private final Screen screen;
-    private final ClientPlayerEntity player;
+    private final RenameNameTagScreen screen;
     private final Text text;
     private final Text disabledText;
 
     public ApplyButtonTooltipSupplier(
       String key,
       String disabledKey,
-      Screen screen,
-      ClientPlayerEntity player
+      RenameNameTagScreen screen
     ) {
       this.screen = screen;
-      this.player = player;
       this.text = Text.translatable(key);
       this.disabledText = Text.translatable(disabledKey).formatted(Formatting.RED);
     }
 
     @Override
     public void onTooltip(ButtonWidget button, MatrixStack matrices, int mouseX, int mouseY) {
-      var cost = ConvenientNameTags.CONFIG.renameCost;
+      var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : screen.itemStack.getCount();
+      var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
       if (cost > 0) {
-        var canAfford = player.experienceLevel >= cost;
+        var canAfford = screen.player.experienceLevel >= cost;
         screen.renderTooltip(matrices, canAfford ? text : disabledText, mouseX, mouseY + 12);
       }
     }
 
     @Override
     public void supply(Consumer<Text> consumer) {
-      consumer.accept(player.experienceLevel >= ConvenientNameTags.CONFIG.renameCost ? text : disabledText);
+      var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : screen.itemStack.getCount();
+      var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
+      consumer.accept(screen.player.experienceLevel >= cost ? text : disabledText);
     }
   }
 }

@@ -25,13 +25,20 @@ public class RenameNameTagPacket extends PacketByteBuf {
 
     server.execute(() -> {
       final ItemStack itemStack = player.getMainHandStack();
-      if (player.experienceLevel < ConvenientNameTags.CONFIG.renameCost) {
+      var multiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : itemStack.getCount();
+      var cost = ConvenientNameTags.CONFIG.renameCost * multiplier;
+      if (player.experienceLevel < cost) {
+        return;
+      }
+      if (ConvenientNameTags.CONFIG.denylist.stream().anyMatch(customName::contains)) {
+        player.sendMessage(Text.translatable("message.convenientnametags.denylisted"));
         return;
       }
       if (itemStack != null) {
         if (customName.isEmpty()) {
           itemStack.removeCustomName();
         } else {
+          player.setExperienceLevel(player.experienceLevel - cost);
           itemStack.setCustomName(Text.of(customName));
         }
       }

@@ -39,14 +39,17 @@ the Name Tag without the use of an Anvil.
 Configuration of Convenient Name Tags is done a `config/convenientnametags.json5` config file
 . The following configuration options are available:
 
-| Gamerule                   | Default   | Description                                                              |
-|----------------------------|-----------|--------------------------------------------------------------------------|
-| `renameCost`               | 0         | Experience levels required to rename a Name Tag                          |
-| `dropNameTagsOnDeath`      | true      | Should a Name Tag drop when a named mod is killed                        |
-| `dropNameTagsOnNameChange` | true      | Should a Name Tag drop from a named mob when another Name Tag is applied |
-| `enableNameTagShearing`    | true      | Should players be able to use shears to remove Name Tags from mobs       | 
-| `enableRenameScreen`       | true      | Should players be able to use the Rename Name Tag screen                 |
-| `enableCraftingRecipe`     | true      | Should the Name Tag crafting recipe be enabled                           |
+| Gamerule                   | Default | Description                                                                 |
+|----------------------------|---------|-----------------------------------------------------------------------------|
+| `renameCost`               | 0       | Experience levels required to rename a Name Tag                             |
+| `renameCostPerWholeStack`  | true    | Should the cost be constant for any stack size (or multiplied by the count) |
+| `dropNameTagsOnDeath`      | true    | Should a Name Tag drop when a named mod is killed                           |
+| `dropNameTagsOnNameChange` | true    | Should a Name Tag drop from a named mob when another Name Tag is applied    |
+| `enableNameTagShearing`    | true    | Should players be able to use shears to remove Name Tags from mobs          | 
+| `enableRenameScreen`       | true    | Should players be able to use the Rename Name Tag screen                    |
+| `enableCraftingRecipe`     | true    | Should the Name Tag crafting recipe be enabled                              |
+| `denyList`                 | empty   | A list of words disallowed when renaming a Name Tag                         | 
+
 
 ![Chain separator](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/separators/chain.png)
 

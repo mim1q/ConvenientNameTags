@@ -7,5 +7,6 @@
   "gui.convenientnametags.cancel": "x",
   "gui.convenientnametags.apply.tooltip": "Zatwierdź",
   "gui.convenientnametags.clear.tooltip": "Wyczyść",
-  "gui.convenientnametags.cancel.tooltip": "Anuluj"
+  "gui.convenientnametags.cancel.tooltip": "Anuluj",
+  "message.convenientnametags.denylisted": "Użyto niedozwolonej nazwy"
 }
