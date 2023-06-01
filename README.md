@@ -39,7 +39,7 @@ the Name Tag without the use of an Anvil.
 Configuration of Convenient Name Tags is done a `config/convenientnametags.json5` config file.  
 The following configuration options are available:
 
-| Gamerule                   | Default | Description                                                                 |
+| Config Option              | Default | Description                                                                 |
 |----------------------------|---------|-----------------------------------------------------------------------------|
 | `renameCost`               | 0       | Experience levels required to rename a Name Tag                             |
 | `renameCostPerWholeStack`  | true    | Should the cost be constant for any stack size (or multiplied by the count) |
