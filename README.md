@@ -36,8 +36,8 @@ the Name Tag without the use of an Anvil.
 
 ### Configuration
 
-Configuration of Convenient Name Tags is done a `config/convenientnametags.json5` config file
-. The following configuration options are available:
+Configuration of Convenient Name Tags is done a `config/convenientnametags.json5` config file.  
+The following configuration options are available:
 
 | Gamerule                   | Default | Description                                                                 |
 |----------------------------|---------|-----------------------------------------------------------------------------|
