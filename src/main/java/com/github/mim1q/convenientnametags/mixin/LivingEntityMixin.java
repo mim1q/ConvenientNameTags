@@ -1,5 +1,6 @@
 package com.github.mim1q.convenientnametags.mixin;
 
+import com.github.mim1q.convenientnametags.ConvenientNameTags;
 import com.github.mim1q.convenientnametags.interfaces.RemovableNameTag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -25,7 +26,7 @@ public abstract class LivingEntityMixin extends Entity implements RemovableNameT
   }
 
   public void removeNameAndNameTag() {
-    if (this.hasCustomName()) {
+    if (this.hasCustomName() && ConvenientNameTags.CONFIG.dropNameTagsOnDeath) {
       ItemStack nameTagItemStack = new ItemStack(Items.NAME_TAG);
       nameTagItemStack.setCustomName(this.getCustomName());
       ItemEntity item = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), nameTagItemStack);

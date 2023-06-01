@@ -4,15 +4,11 @@ import draylar.omegaconfig.api.Config;
 import draylar.omegaconfig.api.Syncing;
 
 public class ConvenientNameTagsConfig implements Config {
-  @Syncing
-  public int renameCost = 0;
-
-  public boolean enableNameTagDrop = true;
-
+  @Syncing public int renameCost = 0;
+  public boolean dropNameTagsOnDeath = true;
+  public boolean dropNameTagsOnNameChange = true;
   public boolean enableNameTagShearing = true;
-
-  public boolean enableRenameScreen = true;
-
+  @Syncing public boolean enableRenameScreen = true;
   public boolean enableCraftingRecipe = true;
 
   @Override

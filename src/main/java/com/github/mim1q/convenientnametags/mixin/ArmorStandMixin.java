@@ -1,5 +1,6 @@
 package com.github.mim1q.convenientnametags.mixin;
 
+import com.github.mim1q.convenientnametags.ConvenientNameTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -24,10 +25,13 @@ public abstract class ArmorStandMixin extends Entity {
   @Inject(method = "interactAt(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", at = @At("HEAD"), cancellable = true)
   protected void cancelInteractAt(PlayerEntity player, Vec3d hitPos, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
     ItemStack stack = player.getStackInHand(hand);
-    boolean isNameTagApplicable = stack.isOf(Items.NAME_TAG)
+    boolean isNameTagApplicable =
+      stack.isOf(Items.NAME_TAG)
       && stack.hasCustomName()
       && !stack.getName().equals(this.getCustomName());
-    boolean areShearsApplicable = stack.isOf(Items.SHEARS)
+    boolean areShearsApplicable =
+      ConvenientNameTags.CONFIG.enableNameTagShearing
+      && stack.isOf(Items.SHEARS)
       && player.isSneaking();
 
     if (isNameTagApplicable || areShearsApplicable) {

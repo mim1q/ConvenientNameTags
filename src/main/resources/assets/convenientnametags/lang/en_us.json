@@ -1,6 +1,7 @@
 {
   "gui.convenientnametags.title": "Rename Name Tag",
   "gui.convenientnametags.experience_required": "Required XP Level: %d",
+  "gui.convenientnametags.not_enough_experience": "Not enough XP",
   "gui.convenientnametags.apply": "✔",
   "gui.convenientnametags.clear": "_",
   "gui.convenientnametags.cancel": "x",

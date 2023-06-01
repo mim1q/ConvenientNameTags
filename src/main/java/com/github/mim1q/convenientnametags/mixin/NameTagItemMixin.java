@@ -1,5 +1,6 @@
 package com.github.mim1q.convenientnametags.mixin;
 
+import com.github.mim1q.convenientnametags.ConvenientNameTags;
 import com.github.mim1q.convenientnametags.interfaces.RemovableNameTag;
 import com.github.mim1q.convenientnametags.screen.RenameNameTagScreen;
 import net.minecraft.entity.LivingEntity;
@@ -28,10 +29,10 @@ public abstract class NameTagItemMixin extends Item {
     if (hand == Hand.OFF_HAND) {
       return TypedActionResult.pass(itemStack);
     }
-    if (world.isClient()) {
+    if (world.isClient() && ConvenientNameTags.CONFIG.enableRenameScreen) {
       RenameNameTagScreen.open(user, itemStack);
     }
-    return TypedActionResult.success(itemStack);
+    return ConvenientNameTags.CONFIG.enableRenameScreen ? TypedActionResult.success(itemStack) : TypedActionResult.pass(itemStack);
   }
 
   @Inject(method = "useOnEntity(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", at = @At("HEAD"), cancellable = true)
@@ -40,7 +41,12 @@ public abstract class NameTagItemMixin extends Item {
       cir.setReturnValue(ActionResult.PASS);
       return;
     }
-    if (!user.world.isClient() && stack.hasCustomName() && entity.isAlive()) {
+    if (
+      ConvenientNameTags.CONFIG.dropNameTagsOnNameChange
+      && !user.world.isClient()
+      && stack.hasCustomName()
+      && entity.isAlive()
+    ) {
       ((RemovableNameTag) entity).removeNameAndNameTag();
     }
   }

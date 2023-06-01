@@ -1,5 +1,6 @@
 package com.github.mim1q.convenientnametags.mixin;
 
+import com.github.mim1q.convenientnametags.ConvenientNameTags;
 import com.github.mim1q.convenientnametags.interfaces.RemovableNameTag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +19,7 @@ public class ShearsItemMixin extends Item {
 
   @Override
   public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-    if (entity.hasCustomName() && user.isSneaking()) {
+    if (ConvenientNameTags.CONFIG.enableNameTagShearing && entity.hasCustomName() && user.isSneaking()) {
       ((RemovableNameTag) entity).removeNameAndNameTag();
       stack.damage(1, user, (playerEntity) -> playerEntity.sendToolBreakStatus(hand));
       return ActionResult.SUCCESS;
