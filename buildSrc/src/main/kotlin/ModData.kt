@@ -3,6 +3,6 @@ object ModData {
   const val id = "convenientnametags"
   const val version = "1.0.0"
   const val versionType = "release"
-  val mcVersions = listOf("1.19", "1.19.1", "1.19.2")
+  val mcVersions = listOf("1.19.4")
   val dependencies = listOf("fabric-api")
 }

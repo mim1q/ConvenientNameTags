@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -15,8 +16,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-
-import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class RenameNameTagScreen extends Screen {
@@ -52,7 +51,6 @@ public class RenameNameTagScreen extends Screen {
     }
 
     this.clearChildren();
-    this.client.keyboard.setRepeatEvents(true);
 
     int halfWidth = this.width / 2;
     int halfHeight = this.height / 2;
@@ -70,39 +68,29 @@ public class RenameNameTagScreen extends Screen {
     this.textField.setChangedListener(this::onTextChanged);
     this.addDrawableChild(this.textField);
 
-    this.applyButton = new ButtonWidget(
-      halfWidth - 101,
-      halfHeight + 14,
-      20,
-      20,
-      Text.translatable(APPLY_KEY),
-      this::onButtonClicked,
-      new ApplyButtonTooltipSupplier(APPLY_TOOLTIP_KEY, NOT_ENOUGH_EXPERIENCE_KEY, this)
-    );
+    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : itemStack.getCount();
+    var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
+    var applyTooltip = cost <= player.experienceLevel
+      ? Text.translatable(APPLY_TOOLTIP_KEY)
+      : Text.translatable(NOT_ENOUGH_EXPERIENCE_KEY).formatted(Formatting.RED);
+    this.applyButton = ButtonWidget.builder(Text.translatable(APPLY_KEY), this::onButtonClicked)
+      .dimensions(halfWidth - 101, halfHeight + 14, 20, 20)
+      .tooltip(Tooltip.of(applyTooltip))
+      .build();
     this.applyButton.active = canApply();
     this.addDrawableChild(applyButton);
 
-    this.clearButton = new ButtonWidget(
-      halfWidth - 79,
-      halfHeight + 14,
-      20,
-      20,
-      Text.translatable(CLEAR_KEY),
-      this::onButtonClicked,
-      new ButtonTooltipSupplier(CLEAR_TOOLTIP_KEY, this)
-    );
+    this.clearButton = ButtonWidget.builder(Text.translatable(CLEAR_KEY), this::onButtonClicked)
+      .dimensions(halfWidth - 79, halfHeight + 14, 20, 20)
+      .tooltip(Tooltip.of(Text.translatable(CLEAR_TOOLTIP_KEY)))
+      .build();
     this.clearButton.active = false;
     this.addDrawableChild(clearButton);
 
-    this.cancelButton = new ButtonWidget(
-      halfWidth - 57,
-      halfHeight + 14,
-      20,
-      20,
-      Text.translatable(CANCEL_KEY),
-      this::onButtonClicked,
-      new ButtonTooltipSupplier(CANCEL_TOOLTIP_KEY, this)
-    );
+    this.cancelButton = ButtonWidget.builder(Text.translatable(CANCEL_KEY), this::onButtonClicked)
+      .dimensions(halfWidth - 57, halfHeight + 14, 20, 20)
+      .tooltip(Tooltip.of(Text.translatable(CANCEL_TOOLTIP_KEY)))
+      .build();
     this.addDrawableChild(cancelButton);
 
     // Set default input text to current name
@@ -111,14 +99,6 @@ public class RenameNameTagScreen extends Screen {
       this.clearButton.active = true;
     }
     this.setInitialFocus(this.textField);
-  }
-
-  @Override
-  public void removed() {
-    super.removed();
-    if (this.client != null) {
-      this.client.keyboard.setRepeatEvents(false);
-    }
   }
 
   // Enter: Apply
@@ -184,16 +164,15 @@ public class RenameNameTagScreen extends Screen {
       var canAfford = player.experienceLevel >= cost;
       var text = Text.translatable(EXPERIENCE_REQUIRED_KEY, cost).formatted(canAfford ? Formatting.GREEN : Formatting.RED);
       var textWidth = textRenderer.getWidth(text);
-      this.fillGradient(
+      fill(
         matrices,
         halfWidth + 100 - textWidth - 3,
         halfHeight - 24,
         halfWidth + 101,
         halfHeight - 13,
-        0x80000000,
         0x80000000
       );
-      this.textRenderer.drawWithShadow(
+      textRenderer.drawWithShadow(
         matrices,
         text,
         halfWidth + 99 - textWidth,
@@ -211,59 +190,5 @@ public class RenameNameTagScreen extends Screen {
 
   public static void open(PlayerEntity player, ItemStack stack) {
     MinecraftClient.getInstance().setScreen(new RenameNameTagScreen((ClientPlayerEntity) player, stack));
-  }
-
-  private static class ButtonTooltipSupplier implements ButtonWidget.TooltipSupplier {
-
-    private final Text text;
-    private final Screen screen;
-
-    public ButtonTooltipSupplier(String key, Screen screen) {
-      this.text = Text.translatable(key);
-      this.screen = screen;
-    }
-
-    @Override
-    public void onTooltip(ButtonWidget button, MatrixStack matrices, int mouseX, int mouseY) {
-      screen.renderTooltip(matrices, this.text, mouseX, mouseY + 12);
-    }
-
-    @Override
-    public void supply(Consumer<Text> consumer) {
-      consumer.accept(this.text);
-    }
-  }
-
-  private static class ApplyButtonTooltipSupplier implements ButtonWidget.TooltipSupplier {
-    private final RenameNameTagScreen screen;
-    private final Text text;
-    private final Text disabledText;
-
-    public ApplyButtonTooltipSupplier(
-      String key,
-      String disabledKey,
-      RenameNameTagScreen screen
-    ) {
-      this.screen = screen;
-      this.text = Text.translatable(key);
-      this.disabledText = Text.translatable(disabledKey).formatted(Formatting.RED);
-    }
-
-    @Override
-    public void onTooltip(ButtonWidget button, MatrixStack matrices, int mouseX, int mouseY) {
-      var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : screen.itemStack.getCount();
-      var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
-      if (cost > 0) {
-        var canAfford = screen.player.experienceLevel >= cost;
-        screen.renderTooltip(matrices, canAfford ? text : disabledText, mouseX, mouseY + 12);
-      }
-    }
-
-    @Override
-    public void supply(Consumer<Text> consumer) {
-      var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : screen.itemStack.getCount();
-      var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
-      consumer.accept(screen.player.experienceLevel >= cost ? text : disabledText);
-    }
   }
 }
