@@ -75,3 +75,7 @@ Configuration of Convenient Name Tags is done a `config/convenientnametags.json5
 ![Links](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/sections/links.png)
 
 ### [CurseForge](https://www.curseforge.com/minecraft/mc-mods/convenient-name-tags) | [Modrinth](https://modrinth.com/mod/convenient-name-tags) | [GitHub](https://github.com/mim1q/ConvenientNameTags) | [Ko-Fi](https://ko-fi.com/mim1q)
+
+![Chain separator](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/separators/chain.png)
+
+[![Kinetic Hosting - 15% off first month with code MIM1Q](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/badges/affiliate.png)](https://billing.kinetichosting.net/aff.php?aff=245)
