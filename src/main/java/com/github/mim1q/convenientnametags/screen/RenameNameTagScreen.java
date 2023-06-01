@@ -147,8 +147,8 @@ public class RenameNameTagScreen extends Screen {
   private boolean canApply() {
     String currentName = this.itemStack.hasCustomName() ? this.itemStack.getName().getString() : "";
     String newName = this.textField.getText();
-    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : this.itemStack.getCount();
-    var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
+    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : this.itemStack.getCount();
+    var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
     return !(currentName.equals(newName) || newName.isBlank() || player.experienceLevel < cost);
   }
 
@@ -178,8 +178,8 @@ public class RenameNameTagScreen extends Screen {
       halfHeight - 22.0F,
       0xFFFFFF
     );
-    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : this.itemStack.getCount();
-    var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
+    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : this.itemStack.getCount();
+    var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
     if (cost > 0) {
       var canAfford = player.experienceLevel >= cost;
       var text = Text.translatable(EXPERIENCE_REQUIRED_KEY, cost).formatted(canAfford ? Formatting.GREEN : Formatting.RED);
@@ -251,8 +251,8 @@ public class RenameNameTagScreen extends Screen {
 
     @Override
     public void onTooltip(ButtonWidget button, MatrixStack matrices, int mouseX, int mouseY) {
-      var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : screen.itemStack.getCount();
-      var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
+      var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : screen.itemStack.getCount();
+      var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
       if (cost > 0) {
         var canAfford = screen.player.experienceLevel >= cost;
         screen.renderTooltip(matrices, canAfford ? text : disabledText, mouseX, mouseY + 12);
@@ -261,8 +261,8 @@ public class RenameNameTagScreen extends Screen {
 
     @Override
     public void supply(Consumer<Text> consumer) {
-      var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : screen.itemStack.getCount();
-      var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
+      var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : screen.itemStack.getCount();
+      var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
       consumer.accept(screen.player.experienceLevel >= cost ? text : disabledText);
     }
   }

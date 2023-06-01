@@ -30,7 +30,7 @@ public abstract class ArmorStandMixin extends Entity {
       && stack.hasCustomName()
       && !stack.getName().equals(this.getCustomName());
     boolean areShearsApplicable =
-      ConvenientNameTags.CONFIG.enableNameTagShearing
+      ConvenientNameTags.CONFIG.enableNameTagShearing()
       && stack.isOf(Items.SHEARS)
       && player.isSneaking();
 
