@@ -1,11 +1,15 @@
 # 0.3.0
 
+## General
+
+- Added owo-lib as a dependency. You do not have to download it manually, it can be downloaded automatically after you launch the game!
+
 ## Config
 
 - Added a config file to customize the mod!  
   Following options are available:
 
-| Gamerule                   | Default | Description                                                                 |
+| Config Option              | Default | Description                                                                 |
 |----------------------------|---------|-----------------------------------------------------------------------------|
 | `renameCost`               | 0       | Experience levels required to rename a Name Tag                             |
 | `renameCostPerWholeStack`  | true    | Should the cost be constant for any stack size (or multiplied by the count) |
