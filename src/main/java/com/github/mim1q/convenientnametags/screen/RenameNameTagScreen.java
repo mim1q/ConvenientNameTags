@@ -1,5 +1,6 @@
 package com.github.mim1q.convenientnametags.screen;
 
+import com.github.mim1q.convenientnametags.ConvenientNameTags;
 import com.github.mim1q.convenientnametags.network.RenameNameTagPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,6 +14,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.function.Consumer;
 
@@ -21,6 +23,7 @@ public class RenameNameTagScreen extends Screen {
 
   private static final String TITLE_KEY = "gui.convenientnametags.title";
   private static final String EXPERIENCE_REQUIRED_KEY = "gui.convenientnametags.experience_required";
+  private static final String NOT_ENOUGH_EXPERIENCE_KEY = "gui.convenientnametags.not_enough_experience";
   private static final String APPLY_KEY = "gui.convenientnametags.apply";
   private static final String CLEAR_KEY = "gui.convenientnametags.clear";
   private static final String CANCEL_KEY = "gui.convenientnametags.cancel";
@@ -74,7 +77,7 @@ public class RenameNameTagScreen extends Screen {
       20,
       Text.translatable(APPLY_KEY),
       this::onButtonClicked,
-      new ButtonTooltipSupplier(APPLY_TOOLTIP_KEY, this)
+      new ApplyButtonTooltipSupplier(APPLY_TOOLTIP_KEY, NOT_ENOUGH_EXPERIENCE_KEY, this, player)
     );
     this.applyButton.active = canApply();
     this.addDrawableChild(applyButton);
@@ -144,7 +147,7 @@ public class RenameNameTagScreen extends Screen {
   private boolean canApply() {
     String currentName = this.itemStack.hasCustomName() ? this.itemStack.getName().getString() : "";
     String newName = this.textField.getText();
-    return !(currentName.equals(newName) || newName.isBlank());
+    return !(currentName.equals(newName) || newName.isBlank() || player.experienceLevel < ConvenientNameTags.CONFIG.renameCost);
   }
 
   private void onButtonClicked(ButtonWidget button) {
@@ -173,6 +176,28 @@ public class RenameNameTagScreen extends Screen {
       halfHeight - 22.0F,
       0xFFFFFF
     );
+    var cost = ConvenientNameTags.CONFIG.renameCost;
+    if (cost > 0) {
+      var canAfford = player.experienceLevel >= cost;
+      var text = Text.translatable(EXPERIENCE_REQUIRED_KEY, cost).formatted(canAfford ? Formatting.GREEN : Formatting.RED);
+      var textWidth = textRenderer.getWidth(text);
+      this.fillGradient(
+        matrices,
+        halfWidth + 100 - textWidth - 3,
+        halfHeight - 24,
+        halfWidth + 101,
+        halfHeight - 13,
+        0x80000000,
+        0x80000000
+      );
+      this.textRenderer.drawWithShadow(
+        matrices,
+        text,
+        halfWidth + 99 - textWidth,
+        halfHeight - 22.0F,
+        0xFFFFFF
+      );
+    }
     super.render(matrices, mouseX, mouseY, delta);
   }
 
@@ -203,6 +228,40 @@ public class RenameNameTagScreen extends Screen {
     @Override
     public void supply(Consumer<Text> consumer) {
       consumer.accept(this.text);
+    }
+  }
+
+  private static class ApplyButtonTooltipSupplier implements ButtonWidget.TooltipSupplier {
+
+    private final Screen screen;
+    private final ClientPlayerEntity player;
+    private final Text text;
+    private final Text disabledText;
+
+    public ApplyButtonTooltipSupplier(
+      String key,
+      String disabledKey,
+      Screen screen,
+      ClientPlayerEntity player
+    ) {
+      this.screen = screen;
+      this.player = player;
+      this.text = Text.translatable(key);
+      this.disabledText = Text.translatable(disabledKey).formatted(Formatting.RED);
+    }
+
+    @Override
+    public void onTooltip(ButtonWidget button, MatrixStack matrices, int mouseX, int mouseY) {
+      var cost = ConvenientNameTags.CONFIG.renameCost;
+      if (cost > 0) {
+        var canAfford = player.experienceLevel >= cost;
+        screen.renderTooltip(matrices, canAfford ? text : disabledText, mouseX, mouseY + 12);
+      }
+    }
+
+    @Override
+    public void supply(Consumer<Text> consumer) {
+      consumer.accept(player.experienceLevel >= ConvenientNameTags.CONFIG.renameCost ? text : disabledText);
     }
   }
 }

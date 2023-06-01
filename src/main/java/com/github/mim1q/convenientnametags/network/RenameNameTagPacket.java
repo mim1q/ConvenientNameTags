@@ -25,6 +25,9 @@ public class RenameNameTagPacket extends PacketByteBuf {
 
     server.execute(() -> {
       final ItemStack itemStack = player.getMainHandStack();
+      if (player.experienceLevel < ConvenientNameTags.CONFIG.renameCost) {
+        return;
+      }
       if (itemStack != null) {
         if (customName.isEmpty()) {
           itemStack.removeCustomName();

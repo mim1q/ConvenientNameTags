@@ -15,9 +15,4 @@ public class ConvenientNameTagsConfig implements Config {
   public String getName() {
     return "convenientnametags";
   }
-
-  @Override
-  public String getExtension() {
-    return "json5";
-  }
 }
