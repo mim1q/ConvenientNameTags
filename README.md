@@ -34,6 +34,19 @@ the Name Tag without the use of an Anvil.
 
 ![Screenshot](https://raw.githubusercontent.com/mim1q/ConvenientNameTags/master/projectPageAssets/screenshot-2.jpg)
 
+### Configuration
+
+Configuration of Convenient Name Tags is done a `config/convenientnametags.json5` config file
+. The following configuration options are available:
+
+| Gamerule                | Default   | Description                                                        |
+|-------------------------|-----------|--------------------------------------------------------------------|
+| `renameCost`            | 0         | Experience levels required to rename a Name Tag                    |
+| `enableNameTagDrop`     | true      | Should a Name Tag drop when a named mod is killed                  |
+| `enableNameTagShearing` | true      | Should players be able to use shears to remove Name Tags from mobs | 
+| `enableRenameScreen`    | true      | Should players be able to use the Rename Name Tag screen           |
+| `enableCraftingRecipe`  | true      | Should the Name Tag crafting recipe be enabled                     |
+
 ![Chain separator](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/separators/chain.png)
 
 ![Questions and Answers](https://raw.githubusercontent.com/mim1q/ModPageAssets/main/sections/qna.png)

@@ -23,7 +23,9 @@ version = ModData.version
 
 repositories {
   mavenCentral()
-  maven(url = "https://jitpack.io")
+  maven("https://jitpack.io")
+  maven("https://maven.draylar.dev/releases")
+  maven("https://maven.shedaniel.me/")
 }
 
 dependencies {
@@ -31,10 +33,11 @@ dependencies {
   mappings("net.fabricmc:yarn:${Versions.yarn}:v2")
   modImplementation("net.fabricmc:fabric-loader:${Versions.fabricLoader}")
   modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.fabricApi}")
+  modImplementation(include("dev.draylar.omega-config:omega-config-base:${Versions.omegaConfig}")!!)
 }
 
 @Suppress("UnstableApiUsage")
-  tasks {
+tasks {
   withType<ProcessResources> {
     inputs.property("version", ModData.version)
     filesMatching("fabric.mod.json") {
