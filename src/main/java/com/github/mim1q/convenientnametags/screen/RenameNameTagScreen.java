@@ -6,12 +6,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -68,8 +69,8 @@ public class RenameNameTagScreen extends Screen {
     this.textField.setChangedListener(this::onTextChanged);
     this.addDrawableChild(this.textField);
 
-    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : itemStack.getCount();
-    var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
+    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : itemStack.getCount();
+    var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
     var applyTooltip = cost <= player.experienceLevel
       ? Text.translatable(APPLY_TOOLTIP_KEY)
       : Text.translatable(NOT_ENOUGH_EXPERIENCE_KEY).formatted(Formatting.RED);
@@ -127,8 +128,8 @@ public class RenameNameTagScreen extends Screen {
   private boolean canApply() {
     String currentName = this.itemStack.hasCustomName() ? this.itemStack.getName().getString() : "";
     String newName = this.textField.getText();
-    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : this.itemStack.getCount();
-    var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
+    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : this.itemStack.getCount();
+    var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
     return !(currentName.equals(newName) || newName.isBlank() || player.experienceLevel < cost);
   }
 
@@ -146,41 +147,50 @@ public class RenameNameTagScreen extends Screen {
   }
 
   @Override
-  public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+  public void render(DrawContext drawContext, int mouseX, int mouseY, float delta) {
     int halfWidth = this.width / 2;
     int halfHeight = this.height / 2;
 
-    this.renderBackground(matrices);
-    this.textRenderer.drawWithShadow(
-      matrices,
+    this.renderBackground(drawContext);
+    this.textRenderer.draw(
       this.getTitle(),
       halfWidth - 100.0F,
       halfHeight - 22.0F,
-      0xFFFFFF
+      0xFFFFFF,
+      true,
+      drawContext.getMatrices().peek().getPositionMatrix(),
+      drawContext.getVertexConsumers(),
+      TextRenderer.TextLayerType.NORMAL,
+      0,
+      0x0000F0
     );
-    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack() ? 1 : this.itemStack.getCount();
-    var cost = ConvenientNameTags.CONFIG.renameCost() * costMultiplier;
+    var costMultiplier = ConvenientNameTags.CONFIG.renameCostPerWholeStack ? 1 : this.itemStack.getCount();
+    var cost = ConvenientNameTags.CONFIG.renameCost * costMultiplier;
     if (cost > 0) {
       var canAfford = player.experienceLevel >= cost;
       var text = Text.translatable(EXPERIENCE_REQUIRED_KEY, cost).formatted(canAfford ? Formatting.GREEN : Formatting.RED);
       var textWidth = textRenderer.getWidth(text);
-      fill(
-        matrices,
+      drawContext.fill(
         halfWidth + 100 - textWidth - 3,
         halfHeight - 24,
         halfWidth + 101,
         halfHeight - 13,
         0x80000000
       );
-      textRenderer.drawWithShadow(
-        matrices,
+      textRenderer.draw(
         text,
         halfWidth + 99 - textWidth,
         halfHeight - 22.0F,
-        0xFFFFFF
+        0xFFFFFF,
+        true,
+        drawContext.getMatrices().peek().getPositionMatrix(),
+        drawContext.getVertexConsumers(),
+        TextRenderer.TextLayerType.NORMAL,
+        0,
+        0x0000F0
       );
     }
-    super.render(matrices, mouseX, mouseY, delta);
+    super.render(drawContext, mouseX, mouseY, delta);
   }
 
   @Override

@@ -24,7 +24,7 @@ version = ModData.version
 repositories {
   mavenCentral()
   maven("https://jitpack.io")
-  maven("https://maven.wispforest.io")
+  maven("https://maven.draylar.dev/releases")
 }
 
 dependencies {
@@ -32,8 +32,7 @@ dependencies {
   mappings("net.fabricmc:yarn:${Versions.yarn}:v2")
   modImplementation("net.fabricmc:fabric-loader:${Versions.fabricLoader}")
   modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.fabricApi}")
-  annotationProcessor(modImplementation("io.wispforest:owo-lib:${Versions.owoLib}")!!)
-  include("io.wispforest:owo-sentinel:${Versions.owoLib}")
+  modImplementation(include("dev.draylar.omega-config:omega-config-base:${Versions.omegaConfig}")!!)
 }
 
 @Suppress("UnstableApiUsage")

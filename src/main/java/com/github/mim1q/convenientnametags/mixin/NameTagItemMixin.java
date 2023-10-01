@@ -29,10 +29,10 @@ public abstract class NameTagItemMixin extends Item {
     if (hand == Hand.OFF_HAND) {
       return TypedActionResult.pass(itemStack);
     }
-    if (world.isClient() && ConvenientNameTags.CONFIG.enableRenameScreen()) {
+    if (world.isClient() && ConvenientNameTags.CONFIG.enableRenameScreen) {
       RenameNameTagScreen.open(user, itemStack);
     }
-    return ConvenientNameTags.CONFIG.enableRenameScreen() ? TypedActionResult.success(itemStack) : TypedActionResult.pass(itemStack);
+    return ConvenientNameTags.CONFIG.enableRenameScreen ? TypedActionResult.success(itemStack) : TypedActionResult.pass(itemStack);
   }
 
   @Inject(method = "useOnEntity(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", at = @At("HEAD"), cancellable = true)
@@ -42,8 +42,8 @@ public abstract class NameTagItemMixin extends Item {
       return;
     }
     if (
-      ConvenientNameTags.CONFIG.dropNameTagsOnNameChange()
-      && !user.world.isClient()
+      ConvenientNameTags.CONFIG.dropNameTagsOnNameChange
+      && !user.getWorld().isClient()
       && stack.hasCustomName()
       && entity.isAlive()
     ) {

@@ -19,7 +19,7 @@ public class ShearsItemMixin extends Item {
 
   @Override
   public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-    if (ConvenientNameTags.CONFIG.enableNameTagShearing() && entity.hasCustomName() && user.isSneaking()) {
+    if (ConvenientNameTags.CONFIG.enableNameTagShearing && entity.hasCustomName() && user.isSneaking()) {
       ((RemovableNameTag) entity).removeNameAndNameTag();
       stack.damage(1, user, (playerEntity) -> playerEntity.sendToolBreakStatus(hand));
       return ActionResult.SUCCESS;

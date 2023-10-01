@@ -26,11 +26,11 @@ public abstract class LivingEntityMixin extends Entity implements RemovableNameT
   }
 
   public void removeNameAndNameTag() {
-    if (this.hasCustomName() && ConvenientNameTags.CONFIG.dropNameTagsOnDeath()) {
+    if (this.hasCustomName() && ConvenientNameTags.CONFIG.dropNameTagsOnDeath) {
       ItemStack nameTagItemStack = new ItemStack(Items.NAME_TAG);
       nameTagItemStack.setCustomName(this.getCustomName());
-      ItemEntity item = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), nameTagItemStack);
-      this.world.spawnEntity(item);
+      ItemEntity item = new ItemEntity(this.getWorld(), this.getX(), this.getY(), this.getZ(), nameTagItemStack);
+      this.getWorld().spawnEntity(item);
       this.setCustomName(null);
     }
   }
